@@ -3,7 +3,7 @@ from nlp_model import NLPModel
 import tensorflow as tf
 
 batcher = DataBatcher("data/command_data_noisy.json")
-model = NLPModel((batcher.max_sentence_len, batcher.total_words), batcher.total_classes)
+model = NLPModel((batcher.max_sentence_len, batcher.total_words), batcher.total_classes, [3,4,5])
 
 saver = tf.train.Saver()
 

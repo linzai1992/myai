@@ -6,18 +6,17 @@ class NLPModel:
 		self.labels = tf.placeholder(tf.float32, shape=[None, output_classes])
 		self.dropout = tf.placeholder(tf.float32)
 
+		filter_count = 16
 		filter_outputs = []
 		for index, filter_length in enumerate(filters):
-			W = tf.Variable(tf.truncated_normal([filter_length, input_shape[1], 1, 32], stddev=0.1))
-			b = tf.Variable(tf.constant(0.1, shape=[32]))
+			W = tf.Variable(tf.truncated_normal([filter_length, input_shape[1], 1, filter_count], stddev=0.1))
+			b = tf.Variable(tf.constant(0.1, shape=[filter_count]))
 			conv_l1 = tf.nn.conv2d(self.input, W, strides=[1,1,1,1], padding="VALID")
 			conv_pool = tf.nn.elu(tf.nn.bias_add(conv_l1, b))
 			conv_pool = tf.nn.max_pool(conv_pool, ksize=[1, input_shape[0] - filter_length + 1, 1, 1], strides=[1,1,1,1], padding="VALID")
-			# conv_pool = tf.reshape(conv_pool, [-1, 32])
-			# drop = tf.nn.dropout(conv_pool, self.dropout)
 			filter_outputs.append(conv_pool)
 
-		total_filters = 32 * len(filters)
+		total_filters = filter_count * len(filters)
 		final_pool = tf.concat(3, filter_outputs)
 		final_pool_flat = tf.reshape(final_pool, [-1, total_filters])
 		drop = tf.nn.dropout(final_pool_flat, self.dropout)
