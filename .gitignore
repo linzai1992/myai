@@ -1,4 +1,5 @@
 SpeechRecognition/__pycache__/
 SpeechRecognition/sound_data/
 NLP/__pycache__
+NLP/data/
 .DS_Store
