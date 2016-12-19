@@ -2,4 +2,5 @@ SpeechRecognition/__pycache__/
 SpeechRecognition/sound_data/
 NLP/__pycache__
 NLP/data/
+NLP/checkpoints/
 .DS_Store
