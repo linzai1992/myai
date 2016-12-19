@@ -19,6 +19,6 @@ with tf.Session() as session:
 	while True:
 		command = input("› ")
 		command_processed = batcher.preprocess_string(command)
-		tensor = batcher.sentence_to_tensor(command_processed)
+		tensor = [batcher.sentence_to_tensor(command_processed)]
 		prediction = model.predict(session, tensor)
 		print("\tPredicted %s" % batcher.index_key_map[prediction])

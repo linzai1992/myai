@@ -30,9 +30,10 @@ class DataBatcher:
 			self.total_samples = 0
 			for key in raw_json:
 				self.total_samples += len(raw_json[key])
+			self.max_sentence_len += 2
 			self.index_map = dict([reversed(i) for i in self.word_map.items()])
 			self.index_key_map = dict([reversed(i) for i in self.key_map.items()])
-			self.total_words = len(self.index_map)
+			self.total_words = len(self.word_map)
 			self.total_classes = len(self.key_map)
 			self.data = [(sent, label) for label, sentences in raw_json.items() for sent in sentences]
 			self.epoch_data = list(self.data)
@@ -50,10 +51,7 @@ class DataBatcher:
 		sentence_tensors = []
 		label_tensors = []
 		for sentence, label in batch:
-			tokens = sentence.split(" ")
-			tensor = np.full((self.max_sentence_len, self.total_words, 1), self.word_map[self.pad_token], dtype=np.float32)
-			for index, token in enumerate(tokens):
-				tensor[index][self.word_map[token]][0] = 1
+			tensor = self.sentence_to_tensor(sentence)
 			sentence_tensors.append(tensor)
 			label_tensor = np.zeros(self.total_classes)
 			label_tensor[self.key_map[label]] = 1
@@ -65,10 +63,7 @@ class DataBatcher:
 		sentence_tensors = []
 		label_tensors = []
 		for sentence, label in batch:
-			tokens = sentence.split(" ")
-			tensor = np.full((self.max_sentence_len, self.total_words, 1), self.word_map[self.pad_token], dtype=np.float32)
-			for index, token in enumerate(tokens):
-				tensor[index][self.word_map[token]][0] = 1
+			tensor = self.sentence_to_tensor(sentence)
 			sentence_tensors.append(tensor)
 			label_tensor = np.zeros(self.total_classes)
 			label_tensor[self.key_map[label]] = 1
@@ -77,10 +72,12 @@ class DataBatcher:
 
 	def sentence_to_tensor(self, sentence):
 		tokens = sentence.split(" ")
+		tokens.insert(0, self.sos_token)
+		tokens.append(self.eos_token)
 		tensor = np.full((self.max_sentence_len, self.total_words, 1), self.word_map[self.pad_token], dtype=np.float32)
 		for index, token in enumerate(tokens):
 			tensor[index][self.word_map[token]][0] = 1
-		return np.array([tensor])
+		return np.array(tensor)
 
 	def preprocess_string(self, strg):
 		strg = strg.lower().replace(".", "").replace("?", "").replace("!", "").replace(",", "").strip()
