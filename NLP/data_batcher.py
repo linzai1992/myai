@@ -70,6 +70,13 @@ class DataBatcher:
 			label_tensors.append(label_tensor)
 		return np.array(sentence_tensors), np.array(label_tensors)
 
+	def generate_batch_embeddings(self, size, vocab_handler):
+		if size > len(self.epoch_data):
+			size = len(self.epoch_data)
+		batch = [self.epoch_data.pop(random.randrange(len(self.epoch_data))) for _ in range(size)]
+		for sentence, label in batch:
+			break
+
 	def sentence_to_tensor(self, sentence):
 		tokens = sentence.split(" ")
 		tokens.insert(0, self.sos_token)
@@ -89,10 +96,4 @@ class DataBatcher:
 			else:
 				final += self.unk_token + " "
 		return final[:-1]
-
-
-
-
-
-
 

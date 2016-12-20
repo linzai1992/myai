@@ -36,7 +36,7 @@ class NLPModel:
 		return session.run(self.predictions, feed_dict={self.input: inputs, self.dropout: 1.0})[0]
 
 	def train(self, session, inputs, labels):
-		session.run(self.optimize, feed_dict={self.input: inputs, self.labels: labels, self.dropout: 0.5})
+		session.run(self.optimize, feed_dict={self.input: inputs, self.labels: labels, self.dropout: 0.75})
 
 	def get_accuracy(self, session, inputs, labels):
 		return session.run(self.accuracy, feed_dict={self.input: inputs, self.labels: labels, self.dropout: 1.0})
