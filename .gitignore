@@ -4,3 +4,10 @@ NLP/__pycache__
 NLP/data/
 NLP/checkpoints/
 .DS_Store
+models/
+models \copy/
+External/
+NLP/Old/data
+NLP/Old/checkpoints
+NLP/Old/__pycache__
+__pycache__
