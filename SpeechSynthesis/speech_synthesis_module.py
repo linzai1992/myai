@@ -23,6 +23,5 @@ with tf.Session() as session:
             print("Epoch ~ %i" % (test_acc))
             batcher.prepare_epoch()
 
-        print("Trained!")
         inputs, labels = batcher.get_training_batch(50)
         model.train_model(session, inputs, labels)
