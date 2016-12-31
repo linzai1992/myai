@@ -9,7 +9,7 @@ class SpeechSynthesisModel:
             self.sequence_length = tf.placeholder(tf.int32, shape=[None])
 
             enc_cell = tf.nn.rnn_cell.LSTMCell(num_units=64)
-            enc_outputs, _ = tf.nn.dynamic_rnn(cell_fw=enc_cell, cell_bw=enc_cell, dtype=tf.float32, sequence_length=self.sequence_length, inputs=self.inputs)
+            enc_outputs, _ = tf.nn.dynamic_rnn(cell=enc_cell, dtype=tf.float32, sequence_length=self.sequence_length, inputs=self.inputs)
             # enc_output_fw, enc_output_bw = enc_outputs
             enc_output_final = enc_outputs # enc_output_fw * enc_output_bw
 
