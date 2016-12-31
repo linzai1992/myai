@@ -15,7 +15,12 @@ with tf.Session() as session:
     session.run(tf.global_variables_initializer())
     while True:
         if batcher.epoch_finished():
-            print("finished an epoch!")
+            input_batches, label_batches = batcher.get_test_batches(50)
+            test_acc = 0
+            for i in range(len(input_batches)):
+                test_acc += model.get_accuracy(session, input_batches[i], label_batches[i])
+            test_acc /= len(input_batches)
+            print("Epoch ~ %i" % (test_acc))
             batcher.prepare_epoch()
 
         print("Trained!")
