@@ -37,8 +37,8 @@ class G2PDataBatcher:
                 p_index = self.phoneme_map[p.strip()]
                 phoneme_tensor[index][p_index] = 1.0
             self.train_samples.append((word_tensor, phoneme_tensor))
-        self.test_samples = self.train_samples[::10][:-1]
-        self.train_samples = [self.train_samples[i] for i in range(len(self.train_samples)) if (i+1) % 10 != 0]
+        self.test_samples = [self.train_samples.pop(random.randrange(len(self.train_samples))) for _ in range(10000)]# self.train_samples[::10][:-1]
+        # self.train_samples = [self.train_samples[i] for i in range(len(self.train_samples)) if (i+1) % 10 != 0]
         self.epoch_samples = list(self.train_samples)
 
     def epoch_finished(self):
