@@ -50,7 +50,7 @@ class G2PDataBatcher:
 
     def get_training_batch(self, size):
         if size > len(self.epoch_samples):
-            size = len(epoch_samples)
+            size = len(self.epoch_samples)
         batch = [self.epoch_samples.pop(random.randrange(len(self.epoch_samples))) for _ in range(size)]
         return self.__prepare_batch(batch)
 
