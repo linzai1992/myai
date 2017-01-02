@@ -15,7 +15,7 @@ with tf.Session() as session:
 
     step_index = 0
     while True:
-        graphemes, phonemes = batcher.get_training_batch(20)
+        graphemes, phonemes = batcher.get_training_batch(50)
         model.train_model(session, graphemes, phonemes)
 
         step_index += 1
@@ -24,7 +24,7 @@ with tf.Session() as session:
             loss = model.get_loss(session, graphemes, phonemes)
             print("Step %i ~ loss: %f" % (step_index, loss))
 
-        if step_index == 5000:
+        if step_index == 6000:
             break
 
     while True:
@@ -33,5 +33,8 @@ with tf.Session() as session:
         for i in range(p.shape[0]):
             word = ""
             for j in range(batcher.sequence_length):
-                word += batcher.phoneme_map_inverse[p[i][j]] + " "
+                phon = batcher.phoneme_map_inverse[p[i][j]]
+                word += phon + " "
+                if phon == "<END>":
+                    break
             print(word)
