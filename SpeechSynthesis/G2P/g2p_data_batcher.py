@@ -19,6 +19,7 @@ class G2PDataBatcher:
                 if len(word) > self.max_word_length:
                     self.max_word_length = len(word)
                 phonemes = tokens[1].split("_")
+                phonemes.append("<END>")
                 phonemes = list(map(lambda x: x.strip(), phonemes))
                 if len(phonemes) > self.max_phoneme_length:
                     self.max_phoneme_length = len(phonemes)
@@ -28,6 +29,7 @@ class G2PDataBatcher:
                         phoneme_index += 1
                 word_phoneme_pairs.append((word, phonemes))
 
+        self.phoneme_map_inverse = {v: k for k, v in self.phoneme_map.items()}
         self.train_samples = []
         for word, phonemes in word_phoneme_pairs:
             word_tensor = np.full([self.sequence_length], self.word_character_map["<PAD>"], dtype=np.int32)
@@ -37,7 +39,7 @@ class G2PDataBatcher:
             for i in range(len(phonemes)):
                 phoneme_tensor[i] = self.phoneme_map[phonemes[i]]
             self.train_samples.append((word_tensor, phoneme_tensor))
-        self.test_samples = [self.train_samples.pop(random.randrange(len(self.train_samples))) for _ in range(20000)]# self.train_samples[::10][:-1]
+        self.test_samples = [self.train_samples.pop(random.randrange(len(self.train_samples))) for _ in range(200)]# self.train_samples[::10][:-1]
         self.epoch_samples = list(self.train_samples)
 
     def epoch_finished(self):
@@ -50,9 +52,17 @@ class G2PDataBatcher:
         batch = [self.epoch_samples.pop(random.randrange(len(self.epoch_samples))) for _ in range(size)]
         return self.__prepare_batch(batch)
 
-    # def get_test_batches(self, batch_sizes):
-    #     grapheme_batch, phoneme_batch = self.__prepare_batch(self.test_samples)
-    #     return np.split(grapheme_batch, batch_sizes, axis=0), np.split(phoneme_batch, batch_sizes, axis=0)
+    def get_test_batch(self):
+        return self.__prepare_batch(self.test_samples)
+
+    def batch_input_string(self, input_string):
+        words = input_string.split(" ")
+        batch = np.full([len(words), self.sequence_length], self.word_character_map["<PAD>"], dtype=np.int32)
+        for i, word in enumerate(words):
+            for j, c in enumerate(word):
+                batch[i][j] = self.word_character_map[c]
+        grapheme_batch = [b.reshape([len(words)]) for b in np.split(batch, self.sequence_length, axis=1)]
+        return grapheme_batch
 
     def __prepare_batch(self, batch):
         grapheme_batch = []
