@@ -4,7 +4,7 @@ import numpy as np
 class G2PModel():
     def __init__(self, sequence_length, total_chars, total_phons):
         self.sequence_length = sequence_length
-        with tf.device("/cpu:0"):
+        with tf.device("/gpu:0"):
             self.inputs = [tf.placeholder(tf.int32, shape=[None,]) for _ in range(sequence_length)]
             self.labels = [tf.placeholder(tf.int32, shape=[None,]) for _ in range(sequence_length)]
             self.should_predict = tf.placeholder(tf.bool)
