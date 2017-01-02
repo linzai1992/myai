@@ -15868,8 +15868,6 @@ c-s_iy1
 c'est-s_eh1_s_t
 c'mon-k_ah0_m_aa1_n
 c's-s_iy1_z
-c1-s_iy1_w_ah1_n
-c2-s_iy1_t_uw1
 ca-k_ah1
 caan-k_aa1_n
 cab-k_ae1_b
@@ -66936,8 +66934,6 @@ lyvers-l_ay1_v_er0_z
 m-eh1_m
 m'bow-m_b_ow1
 m's-eh1_m_z
-m1-eh1_m_w_ah1_n
-m2-eh1_m_t_uw1
 ma-m_aa1
 ma'am-m_ae1_m
 maack-m_aa1_k
@@ -118456,7 +118452,6 @@ vyas-v_y_aa1_s
 vying-v_ay1_ih0_ng
 w-d_ah1_b_ah0_l_y_uw0
 w's-d_ah1_b_ah0_l_y_uw0_z
-w00t-w_uw1_t
 wa-w_aa1
 waack-w_aa1_k
 waag-w_aa1_g

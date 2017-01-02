@@ -1,8 +1,14 @@
-allowed_symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", ",", "'", " "]
+# allowed_symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", ",", "'", " "]
+allowed_symbols = "abcdefghijklmnopqrstuvwxyz012,' "
+allowed_word_symbols = "abcdefghijklmnopqrstuvwxyz,'"
 
 def line_is_problem(line):
     for c in line:
         if not c in allowed_symbols:
+            return True
+    word, phones = line.split("  ")
+    for c in word:
+        if not c in allowed_word_symbols:
             return True
     return False
 

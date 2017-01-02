@@ -3,7 +3,7 @@ import random
 
 class G2PDataBatcher:
     def __init__(self, file_path):
-        self.word_character_map = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n":13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25, ",": 26, "'": 27}
+        self.word_character_map = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n":13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25, ",": 26, "'": 27, "<GO>": 28, "<END>": 29}
         self.phoneme_map = {}
         self.max_word_length = 0
         self.max_phoneme_length = 0
@@ -37,7 +37,7 @@ class G2PDataBatcher:
                 p_index = self.phoneme_map[p.strip()]
                 phoneme_tensor[index][p_index] = 1.0
             self.train_samples.append((word_tensor, phoneme_tensor))
-        self.test_samples = [self.train_samples.pop(random.randrange(len(self.train_samples))) for _ in range(10000)]# self.train_samples[::10][:-1]
+        self.test_samples = [self.train_samples.pop(random.randrange(len(self.train_samples))) for _ in range(20000)]# self.train_samples[::10][:-1]
         # self.train_samples = [self.train_samples[i] for i in range(len(self.train_samples)) if (i+1) % 10 != 0]
         self.epoch_samples = list(self.train_samples)
 
