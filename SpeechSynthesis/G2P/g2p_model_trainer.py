@@ -1,5 +1,7 @@
 from g2p_data_batcher import G2PDataBatcher
 from g2p_model import G2PModel
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 import tensorflow as tf
 
 print("Loading data...")
