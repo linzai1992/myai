@@ -12,7 +12,7 @@ class G2PModel():
             # seq_len X batch_size X total_phons
             cell = tf.nn.rnn_cell.GRUCell(num_units=512)
             cell = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=self.dropout)
-            cell = tf.nn.rnn_cell.MultiRNNCell([cell] * 2)
+            cell = tf.nn.rnn_cell.MultiRNNCell([cell] * 3)
 
             dec_inputs = [tf.ones_like(self.inputs[0], dtype=tf.int32)] + self.labels[:-1] # fill with <GO> token hardcoded for now...
             outputs, states = tf.nn.seq2seq.embedding_rnn_seq2seq(self.inputs, dec_inputs, cell, total_chars, total_phons, 256, feed_previous=self.should_predict)

@@ -8,23 +8,35 @@ print("Loading data...")
 batcher = G2PDataBatcher("data/cmudict_proc.txt")
 print("Building model...")
 model = G2PModel(batcher.sequence_length, len(batcher.word_character_map), len(batcher.phoneme_map))
-
+saver = tf.train.Saver()
 print("Beginning training")
 with tf.Session() as session:
     session.run(tf.global_variables_initializer())
 
     step_index = 0
+    epoch_index = 0
+    graphemes, phonemes = batcher.get_test_batch()
+    loss = model.get_loss(session, graphemes, phonemes)
+    print("Initial | loss: %f" % (loss))
     while True:
+        if batcher.epoch_finished():
+            epoch_index += 1
+            graphemes, phonemes = batcher.get_test_batch()
+            loss = model.get_loss(session, graphemes, phonemes)
+            print("Epoch %i | loss: %f" % (epoch_index, loss))
+            saver.save(session, "checkpoints/g2p_model.ckpt")
+            batcher.prepare_epoch()
+
         graphemes, phonemes = batcher.get_training_batch(50)
         model.train_model(session, graphemes, phonemes)
 
         step_index += 1
-        if step_index % 40 == 0:
+        if step_index % 500 == 0:
             graphemes, phonemes = batcher.get_test_batch()
             loss = model.get_loss(session, graphemes, phonemes)
             print("Step %i ~ loss: %f" % (step_index, loss))
 
-        if step_index == 6000:
+        if step_index == 10000:
             break
 
     while True:
