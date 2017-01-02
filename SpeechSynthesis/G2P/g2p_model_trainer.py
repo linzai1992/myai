@@ -13,7 +13,7 @@ with tf.Session() as session:
 
     step_index = 0
     while True:
-        graphemes, phonemes = batcher.get_training_batch(5)
+        graphemes, phonemes = batcher.get_training_batch(20)
         model.train_model(session, graphemes, phonemes)
 
         step_index += 1
@@ -22,7 +22,7 @@ with tf.Session() as session:
             loss = model.get_loss(session, graphemes, phonemes)
             print("Step %i ~ loss: %f" % (step_index, loss))
 
-        if step_index == 1000:
+        if step_index == 5000:
             break
 
     while True:

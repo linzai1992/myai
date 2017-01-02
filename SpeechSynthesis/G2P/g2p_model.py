@@ -10,7 +10,7 @@ class G2PModel():
             self.should_predict = tf.placeholder(tf.bool)
             self.dropout = tf.placeholder(tf.float32)
             # seq_len X batch_size X total_phons
-            cell = tf.nn.rnn_cell.GRUCell(num_units=64)
+            cell = tf.nn.rnn_cell.GRUCell(num_units=512)
             cell = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=self.dropout)
             cell = tf.nn.rnn_cell.MultiRNNCell([cell] * 2)
 
