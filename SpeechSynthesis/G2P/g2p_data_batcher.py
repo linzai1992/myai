@@ -9,7 +9,7 @@ class G2PDataBatcher:
         self.phoneme_map = {"<PAD>": 0, "<GO>": 1, "<END>": 2}
         self.max_word_length = 0
         self.max_phoneme_length = 0
-        self.sequence_length = 50
+        self.sequence_length = 40
         word_phoneme_pairs = []
         phoneme_index = 3
         with open(file_path, "r") as data_file:
@@ -39,7 +39,7 @@ class G2PDataBatcher:
             for i in range(len(phonemes)):
                 phoneme_tensor[i] = self.phoneme_map[phonemes[i]]
             self.train_samples.append((word_tensor, phoneme_tensor))
-        self.test_samples = [self.train_samples.pop(random.randrange(len(self.train_samples))) for _ in range(200)]# self.train_samples[::10][:-1]
+        self.test_samples = [self.train_samples.pop(random.randrange(len(self.train_samples))) for _ in range(2000)]# self.train_samples[::10][:-1]
         self.epoch_samples = list(self.train_samples)
 
     def epoch_finished(self):
@@ -49,6 +49,8 @@ class G2PDataBatcher:
         self.epoch_samples = list(self.train_samples)
 
     def get_training_batch(self, size):
+        if size > len(self.epoch_samples):
+            size = len(epoch_samples)
         batch = [self.epoch_samples.pop(random.randrange(len(self.epoch_samples))) for _ in range(size)]
         return self.__prepare_batch(batch)
 

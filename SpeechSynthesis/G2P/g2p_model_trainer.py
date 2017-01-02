@@ -31,7 +31,7 @@ with tf.Session() as session:
         model.train_model(session, graphemes, phonemes)
 
         step_index += 1
-        if step_index % 500 == 0:
+        if step_index % 250 == 0:
             graphemes, phonemes = batcher.get_test_batch()
             loss = model.get_loss(session, graphemes, phonemes)
             print("Step %i ~ loss: %f" % (step_index, loss))
