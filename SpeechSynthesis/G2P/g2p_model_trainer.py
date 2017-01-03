@@ -44,7 +44,7 @@ with tf.Session() as session:
             loss = model.get_loss(session, graphemes, phonemes)
             print("Step %i ~ loss: %f" % (step_index, loss))
 
-        if step_index == 1000:
+        if step_index == 15000:
             break
 
     while True:
