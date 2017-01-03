@@ -13,12 +13,12 @@ saver = tf.train.Saver()
 with tf.Session() as session:
     session.run(tf.global_variables_initializer())
 
-    print("Loading model...")
-    ckpt = tf.train.get_checkpoint_state("checkpoints/")
-    if ckpt and ckpt.model_checkpoint_path:
-        saver.restore(session, ckpt.model_checkpoint_path)
-    else:
-        print("Failed loading model!")
+    # print("Loading model...")
+    # ckpt = tf.train.get_checkpoint_state("checkpoints/")
+    # if ckpt and ckpt.model_checkpoint_path:
+    #     saver.restore(session, ckpt.model_checkpoint_path)
+    # else:
+    #     print("Failed loading model!")
 
     print("Beginning training")
     step_index = 0
