@@ -46,6 +46,7 @@ with tf.Session() as session:
 
         if step_index == 15000:
             break
+    saver.save(session, "checkpoints/g2p_model.ckpt")
 
     while True:
         i = input("Enter word: ").lower().strip()
