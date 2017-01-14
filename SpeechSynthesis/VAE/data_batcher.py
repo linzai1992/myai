@@ -22,7 +22,7 @@ class DataBatcher:
 
         batch = self.current_tensor[self.slice_index:self.slice_index + size]
         self.slice_index += size
-        if self.slice_index == self.current_tensor.shape[0]:
+        if self.slice_index == self.current_tensor.shape[0] - 1:
             self.slice_index = 0
             self.current_tensor = None
             self.current_data_file += 1
