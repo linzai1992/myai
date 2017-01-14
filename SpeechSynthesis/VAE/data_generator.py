@@ -50,6 +50,9 @@ class DataGenerator:
     			if len(flacs) > 0:
     				dir_list.append(root_path)
     		for dirname in dirnames:
-    			path = dirpath + "/" + dirname
+    			path = os.path.join(dirpath, dirname)
     			self.__find_data_dirs_rec(path, dir_list)
     		break
+
+gen = DataGenerator()
+gen.generated_data("sound_data", "generated_data", 50, overlapping=False)
