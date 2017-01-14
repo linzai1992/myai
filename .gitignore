@@ -11,4 +11,5 @@ NLP/Old/data
 NLP/Old/checkpoints
 NLP/Old/__pycache__
 SpeechSynthesis/VAE/sound_data
+SpeechSynthesis/VAE/generated_data
 __pycache__
