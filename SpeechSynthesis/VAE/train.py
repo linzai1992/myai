@@ -8,7 +8,7 @@ print("Finding training data...")
 batcher = DataBatcher("generated_data")
 
 print("Building model...")
-model = VAEModel(50, [40, 30])
+model = VAEModel(50, [40, 35, 30])
 batch_size = 5000
 training_steps = 200000
 
