@@ -26,9 +26,11 @@ class DataBatcher:
             self.slice_index = 0
             self.current_tensor = None
             self.current_data_file += 1
+            epoch_complete = False
             if self.current_data_file >= len(self.data_file_paths):
                 self.current_data_file = 0
-        return batch
+                epoch_complete = True
+        return batch, epoch_complete
 
     def __load_tensor_from_file(self, file_path):
         with np.load(file_path) as data:

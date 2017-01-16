@@ -7,7 +7,7 @@ class DataGenerator:
     def __init__(self):
         pass
 
-    def generate_windows(self, input_dir_path, output_dir_path, window_size, overlapping=True):
+    def generate_windows(self, input_dir_path, output_dir_path, window_size, overlapping=True, skip_length=1):
         data_dirs = self.__find_data_dirs(input_dir_path)
         index = 0
         for data_dir in data_dirs:
@@ -16,7 +16,7 @@ class DataGenerator:
                 flacs = list(map(lambda x: dirpath + "/" + x, flacs))
                 sub_tensors = []
                 for flac_file_path in flacs:
-                    windows_tensor = self.__generate_windows_tensor(flac_file_path, window_size, overlapping=overlapping)
+                    windows_tensor = self.__generate_windows_tensor(flac_file_path, window_size, overlapping=overlapping, skip_length=skip_length)
                     sub_tensors.append(windows_tensor)
                 giant_tensor = np.concatenate(sub_tensors, axis=0)
                 save_path = os.path.join(output_dir_path, "windows_{}.npy".format(index))
@@ -25,10 +25,10 @@ class DataGenerator:
                 print("Generated windows tensor %i" % (index-1), giant_tensor.shape)
                 break
 
-    def __generate_windows_tensor(self, flac_path, window_size, overlapping=True):
+    def __generate_windows_tensor(self, flac_path, window_size, overlapping=True, skip_length=1):
         with open(flac_path, "rb") as sndfile:
             data, sample_rate = sf.read(sndfile)
-            step = overlapping if overlapping else window_size
+            step = skip_length if overlapping else window_size
             index = 0
             tensor = []
             while index + window_size < len(data):
@@ -55,4 +55,4 @@ class DataGenerator:
     		break
 
 gen = DataGenerator()
-gen.generated_data("sound_data", "generated_data", 50, overlapping=False)
+gen.generate_windows("sound_data", "generated_data", 50, overlapping=True, skip_length=25)
