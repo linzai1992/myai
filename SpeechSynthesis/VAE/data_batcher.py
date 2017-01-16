@@ -38,7 +38,7 @@ class DataBatcher:
     def get_test_batch(self):
         if self.test_tensor is None:
             self.test_tensor = self.__load_tensor_from_file(self.test_file_path)
-        return test_tensor
+        return self.test_tensor
 
     def __load_tensor_from_file(self, file_path):
         with np.load(file_path) as data:
