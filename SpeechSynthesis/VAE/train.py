@@ -19,7 +19,10 @@ with tf.Session() as session:
         batch, epoch_complete = batcher.get_batch(batch_size)
         model.train_model(session, inputs=batch)
         if epoch_complete:
-            print("Epoch complete")
+            test_batch = batcher.get_test_batch()
+            loss = model.get_loss(session, inputs=test_batch)
+            print("Epoch complete - loss: {}".format(loss))
         if i % 500 == 0:
-            loss = model.get_loss(session, inputs=batch)
+            test_batch = batcher.get_test_batch()
+            loss = model.get_loss(session, inputs=test_batch)
             print("Step {} - loss: {}".format(i, loss))

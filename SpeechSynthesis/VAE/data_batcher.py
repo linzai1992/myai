@@ -12,6 +12,9 @@ class DataBatcher:
                 if filename.endswith(".npz"):
                     self.data_file_paths.append(os.path.join(dirpath, filename))
             break
+        self.test_file_path = self.data_file_paths[-1]
+        self.data_file_paths = self.data_file_paths[:-1]
+        self.test_tensor = None
 
     def get_batch(self, size):
         if self.current_tensor is None:
@@ -31,6 +34,11 @@ class DataBatcher:
                 self.current_data_file = 0
                 epoch_complete = True
         return batch, epoch_complete
+
+    def get_test_batch(self):
+        if self.test_tensor is None:
+            self.test_tensor = self.__load_tensor_from_file(self.test_file_path)
+        return test_tensor
 
     def __load_tensor_from_file(self, file_path):
         with np.load(file_path) as data:
