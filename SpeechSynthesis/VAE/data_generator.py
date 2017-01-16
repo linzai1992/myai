@@ -55,4 +55,4 @@ class DataGenerator:
     		break
 
 gen = DataGenerator()
-gen.generated_data("sound_data", "generated_data", 50, overlapping=False)
+gen.generate_windows("sound_data", "generated_data", 50, overlapping=False)

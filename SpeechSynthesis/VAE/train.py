@@ -10,18 +10,18 @@ print("Finding training data...")
 batcher = DataBatcher("generated_data")
 
 print("Building model...")
-model = VAEModel(80, [70, 60, 50, 40])
-batch_size = 500
-training_steps = 150000
+model = VAEModel(50, [40, 30])
+batch_size = 5000
+training_steps = 200000
 
-print("Starting plot...")
-x_plot = np.arange(training_steps)
-y_plot = collections.deque([None] * training_steps, maxlen=training_steps)
-fig = plt.figure()
-ax = fig.add_subplot(111)
-li, = ax.plot(x_plot, y_plot)
-fig.canvas.draw()
-plt.show(block=False)
+# print("Starting plot...")
+# x_plot = np.arange(training_steps)
+# y_plot = collections.deque([None] * training_steps, maxlen=training_steps)
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+# li, = ax.plot(x_plot, y_plot)
+# fig.canvas.draw()
+# plt.show(block=False)
 
 print("Starting training...")
 with tf.Session() as session:
