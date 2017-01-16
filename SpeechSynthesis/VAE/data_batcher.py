@@ -22,11 +22,11 @@ class DataBatcher:
 
         batch = self.current_tensor[self.slice_index:self.slice_index + size]
         self.slice_index += size
+        epoch_complete = False
         if self.slice_index == self.current_tensor.shape[0] - 1:
             self.slice_index = 0
             self.current_tensor = None
             self.current_data_file += 1
-            epoch_complete = False
             if self.current_data_file >= len(self.data_file_paths):
                 self.current_data_file = 0
                 epoch_complete = True
