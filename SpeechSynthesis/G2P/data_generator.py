@@ -16,7 +16,7 @@ class DataGenerator:
         print("Loading model checkpoint...")
         ckpt = tf.train.get_checkpoint_state(model_checkpoint_path)
         if ckpt and ckpt.model_checkpoint_path:
-            saver.restore(session, ckpt.model_checkpoint_path)
+            self.saver.restore(session, ckpt.model_checkpoint_path)
         else:
             print("Failed loading model!")
 
