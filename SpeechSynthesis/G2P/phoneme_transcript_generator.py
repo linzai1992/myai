@@ -33,20 +33,21 @@ class PhonemeTranscriptGenerator:
                                 transcript_id = tokens[0]
                                 words = tokens[1:]
                                 if len(words) <= self.batcher.sequence_length // 2:
+                                    phon_sentence = ""
                                     for word in words:
                                         word = word.strip().lower()
                                         p = model.predict(session, self.batcher.batch_input_string(word))
-                                        phon_sentence = ""
                                         for i in range(p.shape[0]):
                                             phon_word = ""
                                             for j in range(self.batcher.sequence_length):
                                                 phon = self.batcher.phoneme_map_inverse[p[i][j]]
-                                                phon_word += phon + " "
                                                 if phon == "<END>":
+                                                    phon_word = phon_word.strip()
+                                                    # phon_sentence += phon_word + " "
                                                     break
-                                            phon_word = phon_word.strip()
-                                            phon_sentence += phon_word + " "
-                                        final_output = "{}{} {}\n".format(final_output, transcript_id, phon_sentence.strip())
+                                                phon_word += phon + " "
+                                            phon_sentence += phon_word + " <END>"
+                                    final_output = "{}{} {}\n".format(final_output, transcript_id, phon_sentence.strip())
                         with open(os.path.join(dirpath, "phon_transcript.txt"), "w") as ofile:
                             ofile.write(final_output)
                         break
