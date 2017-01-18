@@ -5,7 +5,7 @@ from g2p_data_batcher import G2PDataBatcher
 import tensorflow as tf
 
 class PhonemeTranscriptGenerator:
-    def __init__(self, root_dir_path):
+    def __init__(self, root_dir_path, model_checkpoint_path):
         self.batcher = G2PDataBatcher("data/cmudict_proc.txt")
         with tf.Session() as session:
             print("Building model...")
@@ -19,34 +19,37 @@ class PhonemeTranscriptGenerator:
             else:
                 print("Failed loading model!")
 
-        dirs = self.__find_data_dirs(root_dir_path)
-        for data_dir in dirs:
-            dirpath, dirnames, filenames = os.walk(data_dir)[0]
-            transcripts = list(filter(lambda x: x.endswith(".trans.txt"), filenames))
-            if len(transcripts) == 1:
-                transcript = transcripts[0]
-                print("Encoding transcript {}".format(transcript))
-                final_output = ""
-                with open(os.path.join(dirpath, transcript), "r") as f:
-                    for line in f:
-                        tokens = line.split(" ")
-                        transcript_id = tokens[0]
-                        words = tokens[1:]
-                        if len(words) <= self.batcher.sequence_length // 2:
-                            for word in words:
-                                word = word.strip().lower()
-                                p = model.predict(session, self.batcher.batch_input_string(word))
-                                for i in range(p.shape[0]):
-                                    phon_word = ""
-                                    for j in range(self.batcher.sequence_length):
-                                        phon = self.batcher.phoneme_map_inverse[p[i][j]]
-                                        phon_word += phon + " "
-                                        if phon == "<END>":
-                                            break
-                                    phon_word = phon_word.strip()
-                                    final_output = "{}{} {}\n".format(final_output, transcript_id, phon_word)
-                with open(os.path.join(dirpath, "phon_transcript.txt"), "w") as ofile:
-                    ofile.write(final_output)
+            dirs = self.__find_data_dirs(root_dir_path)
+            for data_dir in dirs:
+                for dirpath, dirnames, filenames in os.walk(data_dir):
+                    transcripts = list(filter(lambda x: x.endswith(".trans.txt"), filenames))
+                    if len(transcripts) == 1:
+                        transcript = transcripts[0]
+                        print("Encoding transcript {}".format(transcript))
+                        final_output = ""
+                        with open(os.path.join(dirpath, transcript), "r") as f:
+                            for line in f:
+                                tokens = line.split(" ")
+                                transcript_id = tokens[0]
+                                words = tokens[1:]
+                                if len(words) <= self.batcher.sequence_length // 2:
+                                    for word in words:
+                                        word = word.strip().lower()
+                                        p = model.predict(session, self.batcher.batch_input_string(word))
+                                        phon_sentence = ""
+                                        for i in range(p.shape[0]):
+                                            phon_word = ""
+                                            for j in range(self.batcher.sequence_length):
+                                                phon = self.batcher.phoneme_map_inverse[p[i][j]]
+                                                phon_word += phon + " "
+                                                if phon == "<END>":
+                                                    break
+                                            phon_word = phon_word.strip()
+                                            phon_sentence += phon_word + " "
+                                        final_output = "{}{} {}\n".format(final_output, transcript_id, phon_sentence.strip())
+                        with open(os.path.join(dirpath, "phon_transcript.txt"), "w") as ofile:
+                            ofile.write(final_output)
+                        break
 
 
     def __find_data_dirs(self, root_path):
@@ -65,4 +68,4 @@ class PhonemeTranscriptGenerator:
                 self.__find_data_dirs_rec(path, dir_list)
             break
 
-phon_gen = PhonemeTranscriptGenerator("../VAE/sound_data/dev-clean")
+phon_gen = PhonemeTranscriptGenerator("..\\VAE\\sound_data\\dev-clean", "checkpoints")
