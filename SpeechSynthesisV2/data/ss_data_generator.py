@@ -125,4 +125,4 @@ def make_hanning_window(size):
         window[i] = 0.5 * (1.0 - math.cos((2.0 * math.pi * i) / (size - 1)))
     return window
 
-generate_all_data(os.path.join("generated", "phone_map.txt"), "text-phone-sound", os.path.join("generated", "training_samples"))
+generate_all_data(os.path.join("generated", "phone_map.txt"), "text-phone-sound-test", os.path.join("generated", "test_samples"))

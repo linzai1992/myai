@@ -32,7 +32,7 @@ class PhonemeTranscriptGenerator:
                                 tokens = line.split(" ")
                                 transcript_id = tokens[0]
                                 words = tokens[1:]
-                                if len(words) <= self.batcher.sequence_length // 2:
+                                if len(words) <= self.batcher.sequence_length:
                                     phon_sentence = ""
                                     for word in words:
                                         word = word.strip().lower()
@@ -46,8 +46,8 @@ class PhonemeTranscriptGenerator:
                                                     # phon_sentence += phon_word + " "
                                                     break
                                                 phon_word += phon + " "
-                                            phon_sentence += phon_word + " <END>"
-                                    final_output = "{}{} {}\n".format(final_output, transcript_id, phon_sentence.strip())
+                                            phon_sentence += phon_word + " "
+                                    final_output = "{}{} {}<END>\n".format(final_output, transcript_id, phon_sentence)
                         with open(os.path.join(dirpath, "phon_transcript.txt"), "w") as ofile:
                             ofile.write(final_output)
                         break
@@ -69,4 +69,4 @@ class PhonemeTranscriptGenerator:
                 self.__find_data_dirs_rec(path, dir_list)
             break
 
-phon_gen = PhonemeTranscriptGenerator("..\\VAE\\sound_data\\dev-clean", "checkpoints")
+phon_gen = PhonemeTranscriptGenerator("..\\..\\SpeechSynthesisV2\\data\\test-clean\\LibriSpeech\\test-clean", "checkpoints")
