@@ -1,3 +1,5 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 from data_batcher import DataBatcher
 from vae_model import VAEModel
 from time import time
