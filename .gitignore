@@ -15,8 +15,6 @@ SpeechSynthesis/VAE/generated_data
 __pycache__
 SpeechSynthesis/G2P/checkpoints
 SpeechSynthesisV2/data/text-phone-sound
-SpeechSynthesisV2/data/generated/training_samples
-SpeechSynthesisV2/data/generated/test_samples
 SpeechSynthesisV2/data/unprocessed-training-set-large
 SpeechSynthesisV2/data/text-phone-sound-dev
 SpeechSynthesisV2/data/text-phone-sound-test
