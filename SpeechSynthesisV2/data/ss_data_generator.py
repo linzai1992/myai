@@ -30,17 +30,15 @@ def generate_all_data(phone_map_file_path, root_dir_path, output_dir_path, batch
                 index += 512
             spectrogram = np.concatenate(specs, axis=0) # np.zeros([ls - len(specs), fft_len, 2]
             spectrogram = np.concatenate([spectrogram, np.zeros([ls - len(specs), fft_len, 2])], axis=0)
-
-            # Actually save the pair
             phone_batch.append(phones_tensor)
             spectrogram_batch.append(spectrogram)
         if len(phone_batch) == batch_size:
             print("Saving sample {}".format(sample_index))
-            batch_phones = np.concatenate(phone_batch, axis=0)
-            batch_specs = np.concatenate(spectrogram_batch, axis=0)
+            batch_phones = np.array(phone_batch)
+            batch_specs = np.array(spectrogram_batch)
             phone_batch = list()
             spectrogram_batch = list()
-            np.savez_compressed(os.path.join(output_dir_path, "sample_{}".format(sample_index)), [batch_phones, batch_specs], ["phones", "spectrograms"])
+            np.savez_compressed(os.path.join(output_dir_path, "sample_{}".format(sample_index)), batch_phones, batch_specs)
             sample_index += 1
 
 
@@ -125,4 +123,7 @@ def make_hanning_window(size):
         window[i] = 0.5 * (1.0 - math.cos((2.0 * math.pi * i) / (size - 1)))
     return window
 
+print("Generating dev samples...")
+generate_all_data(os.path.join("generated", "phone_map.txt"), "text-phone-sound-dev", os.path.join("generated", "development_samples"))
+print("Generating test samples...")
 generate_all_data(os.path.join("generated", "phone_map.txt"), "text-phone-sound-test", os.path.join("generated", "test_samples"))
