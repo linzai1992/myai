@@ -69,4 +69,4 @@ class PhonemeTranscriptGenerator:
                 self.__find_data_dirs_rec(path, dir_list)
             break
 
-phon_gen = PhonemeTranscriptGenerator("..\\..\\SpeechSynthesisV2\\data\\unprocessed-training-set-large\\traing-clean-100", "checkpoints")
+phon_gen = PhonemeTranscriptGenerator("..\\..\\SpeechSynthesisV2\\data\\unprocessed-training-set-large\\train-clean-100", "checkpoints")
