@@ -3,13 +3,13 @@ import soundfile as sf
 import math
 import numpy as np
 
-def generate_all_data(phone_map_file_path, root_dir_path, output_dir_path, batch_size=50):
+def generate_all_data(phone_map_file_path, root_dir_path, output_dir_path, window_size=512, hop_size=256, batch_size=50):
     pm, pmi = get_phone_maps(phone_map_file_path)
     data_dirs = find_data_dirs(root_dir_path)
     data_tuples = get_data_tuples(data_dirs)
-    lps, ls = get_data_stats(data_tuples, 1024, 512)
+    lps, ls = get_data_stats(data_tuples, window_size, hop_size)
 
-    window = make_hanning_window(1024)
+    window = make_hanning_window(window_size)
     sample_index = 0
     phone_batch = list()
     spectrogram_batch = list()
@@ -22,14 +22,17 @@ def generate_all_data(phone_map_file_path, root_dir_path, output_dir_path, batch
             index = 0
             specs = list()
             fft_len = 0
-            while index < len(data) - (1024 + 512):
-                spec = np.fft.rfft(window * data[index:index+1024])
+            while index < len(data) - (window_size + hop_size):
+                spec = np.fft.fft(window * data[index:index+window_size])
                 spec = np.transpose(np.array([[spec.real, spec.imag]]), (0, 2, 1))
                 fft_len = spec.shape[1]
                 specs.append(spec)
-                index += 512
-            spectrogram = np.concatenate(specs, axis=0) # np.zeros([ls - len(specs), fft_len, 2]
-            spectrogram = np.concatenate([spectrogram, np.zeros([ls - len(specs), fft_len, 2])], axis=0)
+                index += hop_size
+            if len(specs) > window_size:
+                continue
+            spectrogram = np.concatenate(specs, axis=0)
+            spectrogram = np.concatenate([spectrogram, np.zeros([window_size - len(specs), fft_len, 2])], axis=0)
+            print(spectrogram.shape)
             phone_batch.append(phones_tensor)
             spectrogram_batch.append(spectrogram)
         if len(phone_batch) == batch_size:
