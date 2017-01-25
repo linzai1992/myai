@@ -23,13 +23,13 @@ with tf.Session() as session:
     current_step = 0
     while current_epoch < epochs:
         phones_batch, spect_batch, epoch_complete = batcher.get_batch(batch_size)
-        model.train_model(session, inputs=phones_batch, labels=spect_batch)
+        model.train_model(session, inputs=phones_batch, labels=spect_batch, batch_size=phones_batch.shape[0])
 
         if epoch_complete:
             avg_acc = 0.0
             count = 0
             for phones_test_batch, spect_test_batch in batcher.get_test_batches():
-                avg_acc += model.get_loss(session, inputs=phones_test_batch, labels=spect_test_batch)
+                avg_acc += model.get_loss(session, inputs=phones_test_batch, labels=spect_test_batch, batch_size=phones_test_batch.shape[0])
                 count += 1
             avg_acc /= count
             saver.save(session, os.path.join("checkpoints", "speech_synthesis_model"))
