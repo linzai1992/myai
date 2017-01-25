@@ -8,7 +8,7 @@ def generate_all_data(phone_map_file_path, root_dir_path, output_dir_path, windo
     data_dirs = find_data_dirs(root_dir_path)
     data_tuples = get_data_tuples(data_dirs)
     lps, ls = get_data_stats(data_tuples, window_size, hop_size)
-
+    lps = 256
     window = make_hanning_window(window_size)
     sample_index = 0
     phone_batch = list()
@@ -32,7 +32,6 @@ def generate_all_data(phone_map_file_path, root_dir_path, output_dir_path, windo
                 continue
             spectrogram = np.concatenate(specs, axis=0)
             spectrogram = np.concatenate([spectrogram, np.zeros([window_size - len(specs), fft_len, 2])], axis=0)
-            print(spectrogram.shape)
             phone_batch.append(phones_tensor)
             spectrogram_batch.append(spectrogram)
         if len(phone_batch) == batch_size:
