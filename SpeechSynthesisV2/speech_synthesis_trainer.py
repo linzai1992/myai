@@ -10,7 +10,7 @@ phone_map_path = os.path.join("data", "generated", "phone_map.txt")
 
 batcher = SpeechSynthesisDataBatcher(train_data_path, test_data_path)
 print("Building model...")
-model = SpeechSynthesisModel(sequence_length=128, vocab_size=batcher.get_vocab_size(phone_map_path), embedding_size=64, output_shape=[512, 512])
+model = SpeechSynthesisModel(sequence_length=256, vocab_size=batcher.get_vocab_size(phone_map_path), embedding_size=64, output_shape=[512, 512])
 saver = tf.train.Saver()
 
 epochs = 10
