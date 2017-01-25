@@ -27,7 +27,8 @@ class SpeechSynthesisModel:
             # Decoding layers
             W_conv3 = tf.Variable(tf.truncated_normal([3, 1, 128, 32], stddev=0.1))
             b_conv3 = tf.Variable(tf.constant(0.1, shape=[128]))
-            c_conv3 = tf.nn.conv2d_transpose(a_conv2, W_conv3, [-1] + [i//2 for i in output_shape] + [128], strides=[1, 1, 256, 1], padding="SAME")
+            # c_conv3 = tf.nn.conv2d_transpose(a_conv2, W_conv3, [-1] + [i//2 for i in output_shape] + [128], strides=[1, 1, 256, 1], padding="SAME")
+            c_conv3 = tf.nn.conv2d_transpose(a_conv2, W_conv3, [-1, output_shape[0]//2, output_shape[1]//2, 128], strides=[1, 1, 256, 1], padding="SAME")
             a_conv3 = tf.nn.elu(c_conv3 + b_conv3)
 
             W_conv4 = tf.Variable(tf.truncated_normal([3, 3, 2, 128], stddev=0.1))
