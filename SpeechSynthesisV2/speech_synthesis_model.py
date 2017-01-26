@@ -4,7 +4,7 @@ class SpeechSynthesisModel:
     def __init__(self, sequence_length, vocab_size, embedding_size, output_shape):
         assert len(output_shape) == 2, "output_shape must have length 2"
 
-        with tf.variable_scope("speech_synthesizer"):
+        with tf.variable_scope("speech_synthesizer"), tf.device("/gpu:0"):
             self.inputs = tf.placeholder(tf.int32, shape=[None, sequence_length])
             self.batch_size = tf.placeholder(tf.int32)
             self.labels = tf.placeholder(tf.float32, shape=[None] + output_shape + [2])
@@ -41,7 +41,7 @@ class SpeechSynthesisModel:
             # TODO: Add batch norm layers
 
             # Training layers
-            self.loss = tf.reduce_sum(tf.square(self.output - self.labels))
+            self.loss = tf.reduce_sum(tf.reduce_mean(tf.square(self.output - self.labels), axis=[1,2,3]))
             self.train = tf.train.AdamOptimizer(1e-4).minimize(self.loss)
 
     def generate_spectral_features(self, session, inputs, batch_size):
