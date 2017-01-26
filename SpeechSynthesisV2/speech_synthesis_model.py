@@ -12,21 +12,21 @@ class SpeechSynthesisModel:
             embeddings = self.embedding_layer(vocab_size, embedding_size, self.inputs)
 
             # Encoding layers
-            W_conv1 = tf.Variable(tf.truncated_normal([3, 3, 1, 32], stddev=0.1))
-            b_conv1 = tf.Variable(tf.constant(0.1, shape=[32]))
+            W_conv1 = tf.Variable(tf.truncated_normal([3, 3, 1, 64], stddev=0.1))
+            b_conv1 = tf.Variable(tf.constant(0.1, shape=[64]))
             c_conv1 = tf.nn.conv2d(embeddings, W_conv1, strides=[1, 1, 1, 1], padding="SAME")
             a_conv1 = tf.nn.elu(c_conv1 + b_conv1)
 
             # Sequencing layer
             filter_height = 3
             a_conv1_padded = tf.pad(a_conv1, [[0,0], [(filter_height-1)//2,(filter_height-1)//2], [0,0], [0,0]], "CONSTANT")
-            W_conv2 = tf.Variable(tf.truncated_normal([filter_height, embedding_size, 32, 32], stddev=0.1))
-            b_conv2 = tf.Variable(tf.constant(0.1, shape=[32]))
+            W_conv2 = tf.Variable(tf.truncated_normal([filter_height, embedding_size, 64, 64], stddev=0.1))
+            b_conv2 = tf.Variable(tf.constant(0.1, shape=[64]))
             c_conv2 = tf.nn.conv2d(a_conv1_padded, W_conv2, strides=[1, 1, 1, 1], padding="VALID")
             a_conv2 = tf.nn.elu(c_conv2 + b_conv2)
 
             # Decoding layers
-            W_conv3 = tf.Variable(tf.truncated_normal([3, 1, 128, 32], stddev=0.1))
+            W_conv3 = tf.Variable(tf.truncated_normal([3, 1, 128, 64], stddev=0.1))
             b_conv3 = tf.Variable(tf.constant(0.1, shape=[128]))
             c_conv3 = tf.nn.conv2d_transpose(a_conv2, W_conv3, [self.batch_size, output_shape[0]//2, output_shape[1]//2, 128], strides=[1, 1, 256, 1], padding="SAME")
             a_conv3 = tf.nn.elu(c_conv3 + b_conv3)
