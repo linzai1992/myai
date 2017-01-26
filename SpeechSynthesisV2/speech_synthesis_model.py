@@ -6,7 +6,7 @@ class SpeechSynthesisModel:
 
         with tf.variable_scope("speech_synthesizer"):
             self.inputs = tf.placeholder(tf.int32, shape=[None, sequence_length])
-            self.batch_size = tf.placeholder(tf.float32)
+            self.batch_size = tf.placeholder(tf.int32)
             self.labels = tf.placeholder(tf.float32, shape=[None] + output_shape + [2])
 
             embeddings = self.embedding_layer(vocab_size, embedding_size, self.inputs)
