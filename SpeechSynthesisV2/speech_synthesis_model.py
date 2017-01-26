@@ -41,7 +41,7 @@ class SpeechSynthesisModel:
             # TODO: Add batch norm layers
 
             # Training layers
-            self.loss = tf.reduce_mean(tf.square(self.output - self.labels))
+            self.loss = tf.reduce_sum(tf.square(self.output - self.labels))
             self.train = tf.train.AdamOptimizer(1e-4).minimize(self.loss)
 
     def generate_spectral_features(self, session, inputs, batch_size):

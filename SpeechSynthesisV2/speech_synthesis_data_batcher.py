@@ -29,6 +29,7 @@ class SpeechSynthesisDataBatcher:
             self.current_train_batch = None
             if self.train_file_index >= len(self.train_batch_paths):
                 self.train_file_index = 0
+                self.current_train_batch = None
                 epoch_complete = True
 
         return phones_tensor, spect_tensor, epoch_complete
