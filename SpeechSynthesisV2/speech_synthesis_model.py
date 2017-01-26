@@ -59,6 +59,4 @@ class SpeechSynthesisModel:
             embedding = tf.expand_dims(embedding_raw, -1)
             return embedding
 
-    def
-
 # m = SpeechSynthesisModel(sequence_length=10, vocab_size=80, embedding_size=50, output_shape=[512, 512])
