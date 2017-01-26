@@ -27,6 +27,7 @@ class SpeechSynthesisDataBatcher:
         if self.train_batch_index >= self.current_train_batch[0].shape[0]:
             self.train_file_index += 1
             self.current_train_batch = None
+            self.train_batch_index = 0
             if self.train_file_index >= len(self.train_batch_paths):
                 self.train_file_index = 0
                 self.current_train_batch = None
