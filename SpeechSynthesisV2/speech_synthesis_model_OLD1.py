@@ -52,11 +52,11 @@
 #     def get_loss(self, session, inputs, labels, batch_size):
 #         return session.run(self.loss, feed_dict={self.inputs: inputs, self.labels: labels, self.batch_size: batch_size})
 #
-#     def embedding_layer(self, vocab_size, embedding_size, input_tensor):
-#         with tf.device("/cpu:0"):
-#             emb_weights = tf.Variable(tf.truncated_normal([vocab_size, embedding_size], stddev=0.1))
-#             embedding_raw = tf.nn.embedding_lookup(emb_weights, input_tensor)
-#             embedding = tf.expand_dims(embedding_raw, -1)
-#             return embedding
+    # def embedding_layer(self, vocab_size, embedding_size, input_tensor):
+    #     with tf.device("/cpu:0"):
+    #         emb_weights = tf.Variable(tf.truncated_normal([vocab_size, embedding_size], stddev=0.1))
+    #         embedding_raw = tf.nn.embedding_lookup(emb_weights, input_tensor)
+    #         embedding = tf.expand_dims(embedding_raw, -1)
+    #         return embedding
 
 # m = SpeechSynthesisModel(sequence_length=10, vocab_size=80, embedding_size=50, output_shape=[512, 512])
