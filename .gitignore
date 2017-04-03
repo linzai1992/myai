@@ -18,3 +18,6 @@ SpeechSynthesisV2/data/text-phone-sound
 SpeechSynthesisV2/data/unprocessed-training-set-large
 SpeechSynthesisV2/data/text-phone-sound-dev
 SpeechSynthesisV2/data/text-phone-sound-test
+SpeechSynthesisForRealz/data/
+SpeechSynthesisForRealz/checkpoints/
+SpeechSynthesisV3/

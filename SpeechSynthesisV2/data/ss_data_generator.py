@@ -23,10 +23,16 @@ def generate_all_data(phone_map_file_path, root_dir_path, output_dir_path, windo
             specs = list()
             fft_len = 0
             while index < len(data) - (window_size + hop_size):
-                spec = np.fft.fft(window * data[index:index+window_size])
-                spec = np.transpose(np.array([[spec.real, spec.imag]]), (0, 2, 1))
-                fft_len = spec.shape[1]
-                specs.append(spec)
+                
+                # spec1 = np.fft.fft(window * data[index:index+window_size])
+                # spec2 = np.fft.fft(window * data[index+hop_size:index+window_size+hop_size])
+                # phi += angle(spec2) - angle(spec1)
+                # for i in phi:
+                #     while i < -Math.pi: i += 2 * Math.pi
+                #     while i >= Math.pi: i -= 2 * Math.pi
+                # spec = np.transpose(np.array([[spec.real, spec.imag]]), (0, 2, 1))
+                # fft_len = spec.shape[1]
+                # specs.append(spec)
                 index += hop_size
             if len(specs) > window_size:
                 continue
