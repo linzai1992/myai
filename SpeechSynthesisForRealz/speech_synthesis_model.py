@@ -7,6 +7,9 @@ class SpeechSynthesisModel:
             self.inputs = tf.placeholder(tf.float32, shape=[None, input_seq_length, char_embedding_size, 1])
             kek = self.CBHG(self.inputs)
 
+            # ins = tf.placeholder(tf.float32, shape=[None, 128])
+            # hi = self.highway(ins)
+
     def CBHG(self, input_tensor, k=16, in_channels=1, out_channels=128):
         with tf.variable_scope("CBHG"):
             tensor_width = int(input_tensor.get_shape()[-2])
@@ -77,7 +80,23 @@ class SpeechSynthesisModel:
             # for p in projections:
             #     print(p.get_shape())
 
-    def highway():
-        pass
+    def highway(self, input_tensor, layers=4, hidden_size=128):
+        with tf.variable_scope("Highway"):
+            last_input = input_tensor
+            for _ in range(layers):
+                size = int(last_input.get_shape()[-1])
+
+                w_h = tf.Variable(tf.truncated_normal([size, hidden_size], stddev=0.1))
+                b_h = tf.Variable(tf.constant(0.1, shape=[hidden_size]))
+                h_x = tf.nn.elu(tf.nn.xw_plus_b(last_input, w_h, b_h))
+
+                w_t = tf.Variable(tf.truncated_normal([size, hidden_size], stddev=0.1))
+                b_t = tf.Variable(tf.constant(0.1, shape=[hidden_size]))
+                t_x = tf.nn.sigmoid(tf.nn.xw_plus_b(last_input, w_t, b_t))
+                c_x = 1.0 - t_x
+
+                y = (h_x * t_x) + (last_input * c_x)
+                last_input = y
+            return last_input
 
 m = SpeechSynthesisModel(100, 50)
